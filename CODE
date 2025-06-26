@@ -1,0 +1,52 @@
+#include <Servo.h>
+
+// Pin Definitions
+const int rainSensorPin = 2;
+const int soilMoisturePin = A0;
+const int relayPin = 8;
+const int servoPin = 9;
+
+Servo rainShutter;
+
+void setup() {
+  Serial.begin(9600);
+  
+  // Pin Modes
+  pinMode(rainSensorPin, INPUT);
+  pinMode(relayPin, OUTPUT);
+
+  // Initialize Servo
+  rainShutter.attach(servoPin);
+  rainShutter.write(0); // Start with shutter open
+}
+
+void loop() {
+  // Rain Sensor
+  int rainDetected = digitalRead(rainSensorPin);
+
+  if (rainDetected == HIGH) {
+    rainShutter.write(90); // Close shutter
+    Serial.println("Rain detected. Shutter closed.");
+  } else {
+    rainShutter.write(0);  // Open shutter
+    Serial.println("No rain. Shutter open.");
+  }
+
+  // Soil Moisture Sensor
+  int moistureValue = analogRead(soilMoisturePin);
+  int moisturePercentage = map(moistureValue, 0, 1023, 0, 100);
+
+  Serial.print("Soil Moisture: ");
+  Serial.print(moisturePercentage);
+  Serial.println("%");
+
+  if (moisturePercentage < 50) {
+    digitalWrite(relayPin, HIGH); // Turn ON relay (activate pump)
+    Serial.println("Soil is dry. Pump activated.");
+  } else {
+    digitalWrite(relayPin, LOW);  // Turn OFF relay (deactivate pump)
+    Serial.println("Soil is wet. Pump deactivated.");
+  }
+
+  delay(1000); // 1-second delay
+}
