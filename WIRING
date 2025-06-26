@@ -1,0 +1,38 @@
+✅ 1. Wiring Diagram Summary
+🟦 Rain Sensor (Digital Mode)
+Rain Sensor Pin	Connect to Arduino
+VCC	5V
+GND	GND
+D0	Pin 2
+
+When rain is detected, D0 usually goes LOW (0).
+But in your code, it’s checking for HIGH – so test it and change the logic if needed. I’ll explain this in section 4.
+
+🔵 Soil Moisture Sensor (Analog)
+Soil Sensor Pin	Connect to Arduino
+VCC	5V
+GND	GND
+A0	A0
+
+Use Serial Monitor to read actual moisture values and adjust threshold if needed.
+
+🔴 Relay Module (to control water pump)
+Relay Pin	Connect to Arduino
+VCC	5V
+GND	GND
+IN	Pin 8
+
+Relay (to control pump):
+COM → one wire of pump
+
+NO → external power +
+
+Other pump wire → external power –
+
+Common GND between power source and Arduino
+
+🟢 Servo Motor
+Servo Wire	Connect to
+Red	5V (or external 5V)
+Brown/Black	GND
+Yellow/Orange	Pin 9
